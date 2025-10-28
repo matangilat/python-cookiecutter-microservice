@@ -58,11 +58,16 @@ def create_app():
 {% endif -%}
     
     # Initialize infrastructure on startup
-    @app.before_first_request
-    @async_route
-    async def startup():
-        await db_manager.initialize()
-        await cache_manager.initialize()
+    def _startup():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(db_manager.initialize())
+            loop.run_until_complete(cache_manager.initialize())
+        finally:
+            loop.close()
+
+    app.before_first_request(_startup)
     
     # Cleanup on shutdown
     def shutdown():
