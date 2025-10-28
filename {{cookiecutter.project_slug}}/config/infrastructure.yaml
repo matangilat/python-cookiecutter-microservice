@@ -1,0 +1,52 @@
+# Infrastructure configuration
+# This file defines which infrastructure components to enable
+
+{% if cookiecutter.database_type != 'none' %}
+database:
+  type: {{ cookiecutter.database_type }}
+  enabled: true
+  {% if cookiecutter.database_type == 'postgresql' %}
+  settings:
+    pool_size: 20
+    max_overflow: 10
+    pool_timeout: 30
+  {% elif cookiecutter.database_type == 'mysql' %}
+  settings:
+    pool_size: 20
+    max_overflow: 10
+  {% elif cookiecutter.database_type == 'mongodb' %}
+  settings:
+    max_pool_size: 100
+  {% endif %}
+{% endif %}
+
+{% if cookiecutter.cache_type != 'none' %}
+cache:
+  type: {{ cookiecutter.cache_type }}
+  enabled: true
+  {% if cookiecutter.cache_type == 'redis' %}
+  settings:
+    max_connections: 50
+    decode_responses: true
+  {% endif %}
+{% endif %}
+
+{% if cookiecutter.queue_type != 'none' %}
+queue:
+  type: {{ cookiecutter.queue_type }}
+  enabled: true
+  {% if cookiecutter.queue_type == 'kafka' %}
+  settings:
+    group_id: {{ cookiecutter.project_slug }}-consumer
+    auto_offset_reset: earliest
+  {% elif cookiecutter.queue_type == 'rabbitmq' %}
+  settings:
+    queue_name: {{ cookiecutter.project_slug }}-queue
+    prefetch_count: 10
+  {% elif cookiecutter.queue_type == 'sqs' %}
+  settings:
+    queue_name: {{ cookiecutter.project_slug }}-queue
+    max_messages: 10
+    wait_time: 20
+  {% endif %}
+{% endif %}

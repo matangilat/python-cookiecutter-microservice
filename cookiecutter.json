@@ -1,0 +1,38 @@
+{
+  "project_name": "my-microservice",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+  "project_description": "A microservice built with the template",
+  "author_name": "Your Name",
+  "author_email": "your.email@example.com",
+  
+  "web_framework": ["fastapi", "flask"],
+  
+  "database_type": ["postgresql", "mysql", "mongodb", "none"],
+  "deploy_database": ["yes", "no"],
+  
+  "queue_type": ["kafka", "rabbitmq", "sqs", "none"],
+  "deploy_queue": ["yes", "no"],
+  
+  "cache_type": ["redis", "memcached", "none"],
+  "deploy_cache": ["yes", "no"],
+  
+  "enable_metrics": ["yes", "no"],
+  "enable_node_exporter": ["yes", "no"],
+  "enable_tracing": ["yes", "no"],
+  
+  "deploy_monitoring_stack": ["yes", "no"],
+  
+  "use_async_workers": ["yes", "no"],
+  
+  "python_version": "3.11",
+  "docker_registry": "ghcr.io/yourorg",
+  
+  "kubernetes_namespace": "default",
+  
+  "include_ci_cd": ["github-actions", "gitlab-ci", "none"],
+  
+  "_copy_without_render": [
+    "*.pyc",
+    "__pycache__"
+  ]
+}
