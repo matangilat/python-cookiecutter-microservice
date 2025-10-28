@@ -1,6 +1,10 @@
 This directory contains a Cookiecutter template for a Flask microservice.
 
-Important: Do NOT run the Python files inside this template directory directly. They contain Jinja/Cookiecutter template tags (e.g. `{% if cookiecutter.enable_metrics %}` and `{{ cookiecutter.project_slug }}`) which are not valid Python until the template is rendered by Cookiecutter.
+Important: Do NOT run the Python files inside this template directory directly. They contain Jinja/Cookiecutter template tags (for example, the template expression below) which are not valid Python until the template is rendered by Cookiecutter:
+
+{% raw %}
+`{% if cookiecutter.enable_metrics %}` and `{{ cookiecutter.project_slug }}`
+{% endraw %}
 
 How to use this template
 
