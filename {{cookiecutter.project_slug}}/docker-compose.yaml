@@ -237,6 +237,17 @@ services:
       timeout: 5s
       retries: 5
 
+    # Alternative (commented): use the async health-check CLI that performs
+    # database/cache/queue checks. To use this, ensure the image installs the
+    # optional dependencies (see requirements-health.txt) and that the CLI path
+    # exists in the container.
+    # healthcheck:
+    #   test: ["CMD-SHELL", "python -m src.utils.health_check_cli --timeout 5 --json"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+
   {% if cookiecutter.use_async_workers == 'yes' and cookiecutter.queue_type != 'none' %}
   worker:
     build: .
