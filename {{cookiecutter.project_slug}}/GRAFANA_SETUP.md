@@ -10,7 +10,9 @@ When you generate a microservice with `enable_node_exporter=yes` and `deploy_mon
 
 1. **Node Exporter** - Collects system metrics (CPU, memory, disk, network)
 2. **Prometheus** - Scrapes metrics from Node Exporter
-3. **Grafana** - Pre-configured dashboard for visualizing Node Exporter metrics
+3. **Grafana** - Pre-configured dashboards for visualizing Node Exporter metrics
+   - **Node Exporter Dashboard** - Basic metrics overview (6 panels)
+   - **Node Exporter Full** - Comprehensive dashboard from Grafana.com (ID: 1860)
 
 ### Accessing the Dashboard
 
@@ -25,8 +27,9 @@ When you generate a microservice with `enable_node_exporter=yes` and `deploy_mon
    - Username: `admin`
    - Password: `admin`
 
-3. The Node Exporter dashboard is automatically available at:
-   - Navigate to **Dashboards** → **Node Exporter Dashboard**
+3. The Node Exporter dashboards are automatically available:
+   - Navigate to **Dashboards** → **Node Exporter Dashboard** (basic)
+   - Navigate to **Dashboards** → **Node Exporter Full** (comprehensive)
 
 #### Kubernetes
 
@@ -44,14 +47,24 @@ When you generate a microservice with `enable_node_exporter=yes` and `deploy_mon
 
 ### Dashboard Metrics
 
-The pre-configured dashboard includes:
+Two dashboards are included:
 
+#### Node Exporter Dashboard (Basic)
 - **CPU Usage** - CPU utilization across all cores
 - **Memory Usage** - RAM utilization percentage
 - **Disk Usage** - Filesystem usage for root mount
 - **Network Traffic** - Receive/transmit bytes per second
 - **System Load** - 1-minute load average
 - **System Uptime** - Time since last boot
+
+#### Node Exporter Full (Comprehensive)
+From Grafana.com dashboard ID 1860, includes 30+ panels:
+- Detailed CPU metrics (per core, modes, context switches)
+- Memory breakdown (used, cached, buffers, swap)
+- Disk I/O statistics (reads, writes, latency)
+- Network details (packets, errors, drops)
+- Filesystem metrics for all mount points
+- System info (kernel version, uptime, load averages)
 
 ### Manual Import (Alternative Method)
 

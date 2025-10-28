@@ -34,6 +34,7 @@
   "_copy_without_render": [
     "*.pyc",
     "__pycache__",
-    "monitoring/node-exporter-dashboard.json"
+    "monitoring/node-exporter-dashboard.json",
+    "monitoring/node-exporter-full-dashboard.json"
   ]
 }

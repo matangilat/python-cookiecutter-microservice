@@ -151,8 +151,10 @@ services:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - ./monitoring/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
       - ./monitoring/node-exporter-dashboard.json:/var/lib/grafana/dashboards/node-exporter.json
+      - ./monitoring/node-exporter-full-dashboard.json:/var/lib/grafana/dashboards/node-exporter-full.json
     depends_on:
       - prometheus
     healthcheck:
