@@ -15,7 +15,7 @@ run:  ## Run the application locally
 {% endif %}
 
 test:  ## Run tests
-	python3 -m pytest tests/ -v --cov=src
+	python3 -m pytest src/tests/ -v --cov=src
 
 docker-build:  ## Build Docker image
 	docker build -t {{ cookiecutter.docker_registry }}/{{ cookiecutter.project_slug }}:latest .

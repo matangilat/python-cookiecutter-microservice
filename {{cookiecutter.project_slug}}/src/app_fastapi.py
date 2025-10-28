@@ -8,9 +8,9 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from src.api.routes import health, api_v1
-from src.infrastructure.database import DatabaseManager
-from src.infrastructure.cache import CacheManager
-from src.infrastructure.metrics import MetricsCollector
+from src.utils.database import DatabaseManager
+from src.utils.cache import CacheManager
+from src.utils.metrics import MetricsCollector
 from src.config import Settings, InfrastructureConfig
 from src.utils.logging import setup_logging
 

@@ -2,8 +2,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 
-from src.models.schemas import ItemCreate, ItemResponse
-from src.services.item_service import ItemService
+from src.classes.models.schemas import ItemCreate, ItemResponse
+from src.classes.services.item_service import ItemService
 from src.dependencies import get_item_service
 
 router = APIRouter()

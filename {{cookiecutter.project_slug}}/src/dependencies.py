@@ -6,8 +6,8 @@ from flask import current_app
 from fastapi import Depends, Request
 {% endif -%}
 
-from src.repositories.item_repository import ItemRepository
-from src.services.item_service import ItemService
+from src.classes.repositories.item_repository import ItemRepository
+from src.classes.services.item_service import ItemService
 
 
 {% if cookiecutter.web_framework == 'fastapi' -%}

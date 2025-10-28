@@ -63,16 +63,17 @@ helm install {{ cookiecutter.project_slug }} ./helm/{{ cookiecutter.project_slug
 ```
 {{ cookiecutter.project_slug }}/
 ├── src/
-│   ├── api/              # API endpoints
-│   ├── models/           # Data models (Pydantic/SQLAlchemy)
-│   ├── services/         # Business logic
-│   ├── repositories/     # Data access layer
-│   ├── infrastructure/   # Infrastructure clients
-│   └── utils/           # Utilities
+│   ├── api/              # API endpoints and routes
+│   ├── classes/          # Business logic and domain models
+│   │   ├── models/       # Data models (entities & schemas)
+│   │   ├── services/     # Business logic layer
+│   │   └── repositories/ # Data access layer
+│   ├── utils/            # Utilities and infrastructure
+│   └── tests/            # All tests (unit & integration)
 ├── k8s/
-│   ├── infrastructure/  # Optional infrastructure deployments
-│   └── monitoring/      # Monitoring stack
-└── helm/                # Helm charts
+│   ├── infrastructure/   # Optional infrastructure deployments
+│   └── monitoring/       # Monitoring stack
+└── helm/                 # Helm charts
 ```
 
 ## 🔧 Configuration

@@ -3,8 +3,8 @@ from flask import Blueprint, jsonify, request, current_app
 import asyncio
 from functools import wraps
 
-from src.models.schemas import ItemCreate
-from src.services.item_service import ItemService
+from src.classes.models.schemas import ItemCreate
+from src.classes.services.item_service import ItemService
 from src.dependencies import get_item_service_flask
 
 api_bp = Blueprint("api", __name__)

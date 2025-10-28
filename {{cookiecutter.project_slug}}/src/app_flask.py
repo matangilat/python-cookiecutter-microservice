@@ -9,10 +9,10 @@ from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 {% endif -%}
 
 from src.api.routes_flask import health_bp, api_bp
-from src.infrastructure.database import DatabaseManager
-from src.infrastructure.cache import CacheManager
+from src.utils.database import DatabaseManager
+from src.utils.cache import CacheManager
 {% if cookiecutter.enable_metrics == 'yes' -%}
-from src.infrastructure.metrics import MetricsCollector
+from src.utils.metrics import MetricsCollector
 {% endif -%}
 from src.config import Settings, InfrastructureConfig
 from src.utils.logging import setup_logging
