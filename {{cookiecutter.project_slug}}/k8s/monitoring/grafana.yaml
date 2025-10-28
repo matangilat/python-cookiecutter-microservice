@@ -14,6 +14,88 @@ data:
         isDefault: true
         editable: true
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-config
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /etc/grafana/provisioning/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+data:
+  node-exporter.json: |
+    {
+      "dashboard": {
+        "title": "Node Exporter Full",
+        "tags": ["node-exporter"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "title": "CPU Usage",
+            "targets": [
+              {
+                "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+                "legendFormat": "{{instance}}"
+              }
+            ],
+            "type": "graph",
+            "gridPos": {"x": 0, "y": 0, "w": 12, "h": 8}
+          },
+          {
+            "title": "Memory Usage",
+            "targets": [
+              {
+                "expr": "100 * (1 - ((node_memory_MemAvailable_bytes) / (node_memory_MemTotal_bytes)))",
+                "legendFormat": "{{instance}}"
+              }
+            ],
+            "type": "graph",
+            "gridPos": {"x": 12, "y": 0, "w": 12, "h": 8}
+          },
+          {
+            "title": "Disk Usage",
+            "targets": [
+              {
+                "expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{mountpoint=\"/\",fstype!=\"rootfs\"})",
+                "legendFormat": "{{instance}}"
+              }
+            ],
+            "type": "graph",
+            "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8}
+          },
+          {
+            "title": "Network Traffic",
+            "targets": [
+              {
+                "expr": "rate(node_network_receive_bytes_total[5m])",
+                "legendFormat": "{{instance}} - {{device}} - RX"
+              },
+              {
+                "expr": "rate(node_network_transmit_bytes_total[5m])",
+                "legendFormat": "{{instance}} - {{device}} - TX"
+              }
+            ],
+            "type": "graph",
+            "gridPos": {"x": 12, "y": 8, "w": 12, "h": 8}
+          }
+        ],
+        "version": 1
+      }
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,6 +126,10 @@ spec:
         volumeMounts:
         - name: datasources
           mountPath: /etc/grafana/provisioning/datasources
+        - name: dashboards-config
+          mountPath: /etc/grafana/provisioning/dashboards
+        - name: dashboards
+          mountPath: /var/lib/grafana/dashboards
         - name: storage
           mountPath: /var/lib/grafana
         resources:
@@ -57,6 +143,12 @@ spec:
       - name: datasources
         configMap:
           name: grafana-datasources
+      - name: dashboards-config
+        configMap:
+          name: grafana-dashboards-config
+      - name: dashboards
+        configMap:
+          name: grafana-dashboards
       - name: storage
         emptyDir: {}
 ---

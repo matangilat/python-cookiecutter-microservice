@@ -20,33 +20,38 @@ A production-ready, highly configurable Kubernetes microservice template with pl
 ### Prerequisites
 
 - Python 3.11+
-- [Cookiecutter](https://github.com/cookiecutter/cookiecutter)
+- [Cruft](https://github.com/cruft/cruft) (recommended) or [Cookiecutter](https://github.com/cookiecutter/cookiecutter)
 
 ### Installation
 
-**On Debian/Ubuntu (recommended):**
+**Using Cruft (Recommended for template updates):**
 ```bash
-# Install system packages
-sudo apt-get update
-sudo apt-get install -y python3 python3-venv pipx
+# Install cruft with pipx
+pipx install cruft
+pipx ensurepath
 
+# Create a new microservice
+cruft create https://github.com/matangilat/python-cookiecutter-microservice
+
+# Later, update your project when template changes
+cd your-microservice
+cruft update
+```
+
+**Using Cookiecutter:**
+```bash
 # Install cookiecutter with pipx
 pipx install cookiecutter
 pipx ensurepath
 
-# Close and reopen terminal
-```
-
-**Other systems:**
-```bash
-pip install cookiecutter
-
 # Generate a new microservice
-cookiecutter https://github.com/yourorg/cookiecutter-microservice
+cookiecutter https://github.com/matangilat/python-cookiecutter-microservice
 
 # Or from local path
 cookiecutter /path/to/cookiecutter-microservice
 ```
+
+See [CRUFT_USAGE.md](CRUFT_USAGE.md) for detailed cruft usage and updating existing projects.
 
 ### Interactive Prompts
 
