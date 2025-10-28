@@ -41,3 +41,8 @@ def setup_logging(level: str = "INFO") -> None:
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(JSONFormatter())
     root_logger.addHandler(console_handler)
+
+
+def get_logger(name: str):
+    """Return a logger instance with the configured handlers."""
+    return logging.getLogger(name)

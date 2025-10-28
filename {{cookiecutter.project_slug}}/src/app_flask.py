@@ -1,6 +1,7 @@
 """Flask application entry point."""
 import asyncio
 import atexit
+import time
 from functools import wraps
 
 from flask import Flask, jsonify, Response
@@ -80,16 +81,24 @@ def create_app():
     @app.before_request
     def before_request():
         from flask import request
-        request._start_time = asyncio.get_event_loop().time()
-    
+        try:
+            request._start_time = asyncio.get_event_loop().time()
+        except RuntimeError:
+            request._start_time = time.time()
+
     @app.after_request
     def after_request(response):
         from flask import request
-        metrics.track_request(
-            method=request.method,
-            endpoint=request.endpoint or "unknown",
-            status_code=response.status_code,
-        )
+        try:
+            m = getattr(app, 'metrics', None)
+            if m is not None:
+                m.track_request(
+                    method=request.method,
+                    endpoint=request.endpoint or "unknown",
+                    status_code=response.status_code,
+                )
+        except Exception:
+            pass
         return response
     
 {% endif -%}
