@@ -1,0 +1,32 @@
+# Core dependencies
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+PyYAML>=6.0.0
+
+
+# Flask dependencies
+flask>=3.0.0
+werkzeug>=3.0.0
+
+
+
+# PostgreSQL
+asyncpg>=0.29.0
+sqlalchemy[asyncio]>=2.0.0
+
+
+
+# Redis
+redis[asyncio]>=5.0.0
+
+
+
+# Kafka
+aiokafka>=0.8.0
+
+
+
+# Metrics
+prometheus-client>=0.19.0
+

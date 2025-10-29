@@ -1,0 +1,36 @@
+# Infrastructure configuration
+# This file defines which infrastructure components to enable
+
+
+database:
+  type: postgresql
+  enabled: true
+  
+  settings:
+    pool_size: 20
+    max_overflow: 10
+    pool_timeout: 30
+  
+
+
+
+cache:
+  type: redis
+  enabled: true
+  
+  settings:
+    max_connections: 50
+    decode_responses: true
+  
+
+
+
+queue:
+  type: kafka
+  enabled: true
+  
+  settings:
+    group_id: testing-consumer
+    auto_offset_reset: earliest
+  
+

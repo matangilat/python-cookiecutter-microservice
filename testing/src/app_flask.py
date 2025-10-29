@@ -5,16 +5,11 @@ import time
 from functools import wraps
 
 from flask import Flask, jsonify, Response
-{% if cookiecutter.enable_metrics == 'yes' -%}
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
-{% endif -%}
-
 from src.api.routes_flask import health_bp, api_bp
 from src.utils.database import DatabaseManager
 from src.utils.cache import CacheManager
-{% if cookiecutter.enable_metrics == 'yes' -%}
 from src.utils.metrics import MetricsCollector
-{% endif -%}
 from src.config import Settings, InfrastructureConfig
 from src.utils.logging import setup_logging
 
@@ -27,11 +22,7 @@ setup_logging(settings.LOG_LEVEL)
 # Initialize infrastructure managers
 db_manager = DatabaseManager(settings, infra_config)
 cache_manager = CacheManager(settings, infra_config)
-{% if cookiecutter.enable_metrics == 'yes' -%}
 metrics = MetricsCollector()
-{% endif -%}
-
-
 def async_route(f):
     """Decorator to run async functions in Flask routes."""
     @wraps(f)
@@ -53,48 +44,19 @@ def create_app():
     # Store managers in app context
     app.db_manager = db_manager
     app.cache_manager = cache_manager
-    {%- if cookiecutter.enable_metrics == 'yes' %}
     app.metrics = metrics
-    {%- endif %}
     
-    # Initialize infrastructure on startup (Flask 3.0+ compatible)
-    app._initialized = False
-    
-    {%- if cookiecutter.enable_metrics == 'yes' %}
-    # Combined startup and metrics middleware
-    @app.before_request
-    def before_request_handler():
-        from flask import request
-        # Initialize on first request
-        if not app._initialized:
-            app._initialized = True
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                loop.run_until_complete(db_manager.initialize())
-                loop.run_until_complete(cache_manager.initialize())
-            finally:
-                loop.close()
-        
-        # Track request start time for metrics
-        try:
-            request._start_time = asyncio.get_event_loop().time()
-        except RuntimeError:
-            request._start_time = time.time()
-    {%- else %}
-    # Initialize infrastructure on first request
-    @app.before_request
+    # Initialize infrastructure on startup
     def _startup():
-        if not app._initialized:
-            app._initialized = True
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                loop.run_until_complete(db_manager.initialize())
-                loop.run_until_complete(cache_manager.initialize())
-            finally:
-                loop.close()
-    {%- endif %}
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(db_manager.initialize())
+            loop.run_until_complete(cache_manager.initialize())
+        finally:
+            loop.close()
+
+    app.before_first_request(_startup)
     
     # Cleanup on shutdown
     def shutdown():
@@ -107,9 +69,15 @@ def create_app():
             loop.close()
     
     atexit.register(shutdown)
-    
-    {%- if cookiecutter.enable_metrics == 'yes' %}
-    # Metrics tracking middleware
+    # Middleware for metrics
+    @app.before_request
+    def before_request():
+        from flask import request
+        try:
+            request._start_time = asyncio.get_event_loop().time()
+        except RuntimeError:
+            request._start_time = time.time()
+
     @app.after_request
     def after_request(response):
         from flask import request
@@ -124,19 +92,13 @@ def create_app():
         except Exception:
             pass
         return response
-    
-    {%- endif %}
     # Register blueprints
     app.register_blueprint(health_bp)
     app.register_blueprint(api_bp, url_prefix="/api/v1")
-    
-    {%- if cookiecutter.enable_metrics == 'yes' %}
     # Metrics endpoint
     @app.route("/metrics")
     def metrics_endpoint():
         return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
-    
-    {%- endif %}
     return app
 
 
