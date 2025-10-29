@@ -81,7 +81,7 @@ def create_app():
     
     atexit.register(shutdown)
     
-{% if cookiecutter.enable_metrics == 'yes' -%}
+    {% if cookiecutter.enable_metrics == 'yes' -%}
     # Middleware for metrics
     @app.before_request
     def before_request():
@@ -106,18 +106,18 @@ def create_app():
             pass
         return response
     
-{% endif -%}
+    {% endif -%}
     # Register blueprints
     app.register_blueprint(health_bp)
     app.register_blueprint(api_bp, url_prefix="/api/v1")
     
-{% if cookiecutter.enable_metrics == 'yes' -%}
+    {% if cookiecutter.enable_metrics == 'yes' -%}
     # Metrics endpoint
     @app.route("/metrics")
     def metrics_endpoint():
         return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
     
-{% endif -%}
+    {% endif -%}
     return app
 
 
