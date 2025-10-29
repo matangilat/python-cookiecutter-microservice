@@ -53,9 +53,9 @@ def create_app():
     # Store managers in app context
     app.db_manager = db_manager
     app.cache_manager = cache_manager
-{% if cookiecutter.enable_metrics == 'yes' -%}
+    {% if cookiecutter.enable_metrics == 'yes' -%}
     app.metrics = metrics
-{% endif -%}
+    {% endif -%}
     
     # Initialize infrastructure on startup
     def _startup():
