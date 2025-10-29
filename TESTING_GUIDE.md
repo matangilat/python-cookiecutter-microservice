@@ -280,6 +280,7 @@ Should show:
 
 ### ✅ No Template Syntax
 
+{% raw %}
 ```bash
 # Should NOT see any Jinja2 syntax like {% if %} or {{ }}
 grep -r "{% " src/
@@ -287,6 +288,7 @@ grep -r "{{ " src/
 
 # Should return nothing (empty)
 ```
+{% endraw %}
 
 ### ✅ Dependencies Match Choices
 
